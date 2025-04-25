@@ -18,7 +18,7 @@ import logging
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.os_manager import ChromeType
 from ttkthemes import ThemedTk
-
+import sys
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -422,20 +422,24 @@ def save_settings(offline, sensitivity, timeout, window):
     app_settings["listen_timeout"] = timeout
     
     window.destroy()
+    
+def resource_path(relative_path):
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 root = ThemedTk(theme="arc")
 root.title("Voice Control for Websites")
 root.geometry("600x500")
 
-globe_img = Image.open("resources/globe.png")
+globe_img = Image.open(resource_path("resources/globe.png"))
 globe_img = globe_img.resize((16, 16), Image.Resampling.LANCZOS)
 globe_icon = ImageTk.PhotoImage(globe_img)
 
-usa_img = Image.open("resources/usa.png")
+usa_img = Image.open(resource_path("resources/usa.png"))
 usa_img = usa_img.resize((16, 16), Image.Resampling.LANCZOS)
 usa_icon = ImageTk.PhotoImage(usa_img)
 
-rus_img = Image.open("resources/rus.png")
+rus_img = Image.open(resource_path("resources/rus.png"))
 rus_img = rus_img.resize((16, 16), Image.Resampling.LANCZOS)
 rus_icon = ImageTk.PhotoImage(rus_img)
 
