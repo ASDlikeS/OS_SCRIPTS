@@ -427,15 +427,15 @@ root = ThemedTk(theme="arc")
 root.title("Voice Control for Websites")
 root.geometry("600x500")
 
-globe_img = Image.open("globe.png")
+globe_img = Image.open("resources/globe.png")
 globe_img = globe_img.resize((16, 16), Image.Resampling.LANCZOS)
 globe_icon = ImageTk.PhotoImage(globe_img)
 
-usa_img = Image.open("usa.png")
+usa_img = Image.open("resources/usa.png")
 usa_img = usa_img.resize((16, 16), Image.Resampling.LANCZOS)
 usa_icon = ImageTk.PhotoImage(usa_img)
 
-rus_img = Image.open("rus.png")
+rus_img = Image.open("resources/rus.png")
 rus_img = rus_img.resize((16, 16), Image.Resampling.LANCZOS)
 rus_icon = ImageTk.PhotoImage(rus_img)
 
