@@ -1,3 +1,11 @@
+name: Build EpisodeSkipper
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
