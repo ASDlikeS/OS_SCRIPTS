@@ -26,6 +26,7 @@ jobs:
         working-directory: ./episode_skipper
         run: |
           pyinstaller --onefile --name=EpisodeSkipper \
+            --collect-all=PIL \
             --add-data "resources/globe.png:resources" \
             --add-data "resources/rus.png:resources" \
             --add-data "resources/usa.png:resources" \
@@ -58,8 +59,9 @@ jobs:
           pyinstaller `
             --onefile `
             --windowed `
-            --name=EpisodeSkipper `
-            --icon=resources/app_icon.png `
+            --hidden-import=PIL._tkinter_finder `
+            --collect-all=PIL `
+            --icon=resources/app_icon.ico `
             --add-data "resources/globe.png;resources" `
             --add-data "resources/rus.png;resources" `
             --add-data "resources/usa.png;resources" `
