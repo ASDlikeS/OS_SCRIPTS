@@ -24,10 +24,10 @@ jobs:
       - name: Build Linux binary
         run: |
           pyinstaller --onefile --name=EpisodeSkipper \
-            --add-data "resources/globe.png:resources" \
-            --add-data "resources/rus.png:resources" \
-            --add-data "resources/usa.png:resources" \
-            episode_skipper.py
+            --add-data "/episode_skipper/resources/globe.png:resources" \
+            --add-data "/episode_skipper/resources/rus.png:resources" \
+            --add-data "/episode_skipper/resources/usa.png:resources" \
+            /episode_skipper/episode_skipper.py
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
@@ -53,10 +53,10 @@ jobs:
       - name: Build Windows .exe
         run: |
           pyinstaller --onefile --windowed --name=EpisodeSkipper --icon=resources\app_icon.ico ^
-            --add-data "resources\globe.png;resources" ^
-            --add-data "resources\rus.png;resources" ^
-            --add-data "resources\usa.png;resources" ^
-            episode_skipper.py
+            --add-data "/episode_skipper/resources\globe.png;resources" `
+            --add-data "/episode_skipper/resources\rus.png;resources" `
+            --add-data "/episode_skipper/resources\usa.png;resources" `
+            /episode_skipper/episode_skipper.py
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
