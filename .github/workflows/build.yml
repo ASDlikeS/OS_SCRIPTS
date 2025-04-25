@@ -1,9 +1,14 @@
 name: Build EpisodeSkipper
+
+permissions:
+  contents: write
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -81,24 +86,41 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
       - name: Create Release
+        uses: actions/create-release@v1
         id: create_release
-        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.date.outputs.date }}
-          name: EpisodeSkipper Build ${{ steps.date.outputs.date }}
+          release_name: EpisodeSkipper Build ${{ steps.date.outputs.date }}
           draft: false
           prerelease: false
-          files: |
-            artifacts/EpisodeSkipper-linux/EpisodeSkipper
-            artifacts/EpisodeSkipper-win/EpisodeSkipper.exe
           body: |
             Автоматический релиз EpisodeSkipper от ${{ steps.date.outputs.date }}
 
             ## Загрузки
             - Windows: EpisodeSkipper.exe
             - Linux: EpisodeSkipper
+
+      - name: Upload Linux Asset
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: artifacts/EpisodeSkipper-linux/EpisodeSkipper
+          asset_name: EpisodeSkipper-linux
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: artifacts/EpisodeSkipper-win/EpisodeSkipper.exe
+          asset_name: EpisodeSkipper.exe
+          asset_content_type: application/octet-stream
