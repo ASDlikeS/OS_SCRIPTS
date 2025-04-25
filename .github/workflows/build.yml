@@ -40,6 +40,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Debug file structure
+        run: Get-ChildItem -Recurse
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -52,10 +55,14 @@ jobs:
 
       - name: Build Windows .exe
         run: |
-          pyinstaller --onefile --windowed --name=EpisodeSkipper --icon=resources\app_icon.ico ^
-            --add-data "episode_skipper/resources\globe.png;resources" `
-            --add-data "episode_skipper/resources\rus.png;resources" `
-            --add-data "episode_skipper/resources\usa.png;resources" `
+          pyinstaller `
+            --onefile `
+            --windowed `
+            --name=EpisodeSkipper `
+            --icon=resources/app_icon.ico `
+            --add-data "episode_skipper/resources/globe.png;resources" `
+            --add-data "episode_skipper/resources/rus.png;resources" `
+            --add-data "episode_skipper/resources/usa.png;resources" `
             episode_skipper/episode_skipper.py
 
       - name: Upload Windows artifact
