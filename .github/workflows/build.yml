@@ -1,27 +1,22 @@
 name: Build EpisodeSkipper
-
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
 jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller pillow selenium webdriver-manager ttkthemes SpeechRecognition
-
       - name: Build Linux binary
         working-directory: ./episode_skipper
         run: |
@@ -31,7 +26,9 @@ jobs:
             --add-data "resources/rus.png:resources" \
             --add-data "resources/usa.png:resources" \
             episode_skipper.py
-
+      - name: Check build directory
+        working-directory: ./episode_skipper
+        run: ls -la dist/
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
@@ -42,23 +39,21 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller pillow selenium webdriver-manager ttkthemes SpeechRecognition
-
       - name: Build Windows .exe
         working-directory: ./episode_skipper
         run: |
           pyinstaller `
             --onefile `
             --windowed `
+            --name=EpisodeSkipper `
             --hidden-import=PIL._tkinter_finder `
             --collect-all=PIL `
             --icon=resources/app_icon.ico `
@@ -66,7 +61,9 @@ jobs:
             --add-data "resources/rus.png;resources" `
             --add-data "resources/usa.png;resources" `
             episode_skipper.py
-
+      - name: Check build directory
+        working-directory: ./episode_skipper
+        run: dir dist
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
