@@ -12,7 +12,6 @@ from threading import Thread
 import time
 from PIL import Image, ImageTk
 import os
-import sys
 import platform
 import subprocess
 import logging
@@ -424,11 +423,21 @@ def save_settings(offline, sensitivity, timeout, window):
     
     window.destroy()
 
-# Инициализация графического интерфейса
 root = ThemedTk(theme="arc")
 root.title("Voice Control for Websites")
 root.geometry("600x500")
-root.configure(bg="#ffffff")
+
+globe_img = Image.open("globe.png")
+globe_img = globe_img.resize((16, 16), Image.Resampling.LANCZOS)
+globe_icon = ImageTk.PhotoImage(globe_img)
+
+usa_img = Image.open("usa.png")
+usa_img = usa_img.resize((16, 16), Image.Resampling.LANCZOS)
+usa_icon = ImageTk.PhotoImage(usa_img)
+
+rus_img = Image.open("rus.png")
+rus_img = rus_img.resize((16, 16), Image.Resampling.LANCZOS)
+rus_icon = ImageTk.PhotoImage(rus_img)
 
 style = ttk.Style()
 style.configure("TButton", font=("Segoe UI", 11, "bold"), padding=10)
@@ -439,11 +448,9 @@ style.configure("Header.TLabel", font=("Segoe UI", 14, "bold"))
 main_frame = ttk.Frame(root, padding=20)
 main_frame.pack(fill="both", expand=True)
 
-# Заголовок
 header = ttk.Label(main_frame, text=translations[current_language]["title"], style="Header.TLabel")
 header.pack(pady=10)
 
-# Поля ввода
 url_label = ttk.Label(main_frame, text="Website URL:")
 url_label.pack(pady=5, anchor="w")
 url_entry = ttk.Entry(main_frame, width=50)
@@ -460,7 +467,6 @@ trigger_entry = ttk.Entry(main_frame, width=50)
 trigger_entry.pack(pady=5, fill="x")
 trigger_entry.insert(0, "next")
 
-# Фрейм для кнопок управления
 control_frame = ttk.Frame(main_frame)
 control_frame.pack(pady=15, fill="x")
 
@@ -472,7 +478,6 @@ stop_button = ttk.Button(control_frame, text="Stop Capturing",
                         command=stop_voice_control, state=tk.DISABLED)
 stop_button.pack(side="left", padx=5)
 
-# Статусная панель
 status_frame = ttk.Frame(main_frame)
 status_frame.pack(pady=10, fill="x")
 
@@ -480,66 +485,64 @@ status_label = ttk.Label(status_frame, text="Voice capture stopped",
                         foreground="#666666")
 status_label.pack(side="left")
 
-# Панель управления внизу окна
 bottom_panel = ttk.Frame(root)
 bottom_panel.pack(side="bottom", pady=10)
 
 language_menu = tk.Menu(root, tearoff=0)
 
-# Добавляем пункты меню
 language_menu.add_command(
     label="English",
+    compound="left",
+    image=usa_icon,
     command=lambda: change_language("English")
 )
 language_menu.add_command(
     label="Русский",
+    compound="left",
+    image=rus_icon,
     command=lambda: change_language("Русский")
 )
-language_icon = "🌐"
-# И только потом создаем саму кнопку
 language_button = ttk.Button(
     bottom_panel,
-    text=f"{language_icon} {current_language}",
+    text=current_language,
+    compound="left",
+    image=globe_icon,
     command=lambda: language_menu.tk_popup(
         language_button.winfo_rootx(),
         language_button.winfo_rooty() + language_button.winfo_height()
     ),
-    width=12
+    width=15
 )
 
-# Кнопка языка с иконкой
 language_button = ttk.Button(
     bottom_panel,
-    text=f"{language_icon} {current_language}",
+    text=current_language,
+    image=globe_icon,
+    compound="left",
     command=lambda: language_menu.tk_popup(
         language_button.winfo_rootx(),
         language_button.winfo_rooty() + language_button.winfo_height()
     ),
-    width=12
+    width=15
 )
 language_button.pack(side="right", padx=5)
 
-# Кнопка настроек
 settings_button = ttk.Button(
     bottom_panel,
     text="⚙",
-    width=3,
+    width=10,
     command=open_settings
 )
 settings_button.pack(side="right", padx=5)
 
-# Стили для акцентных элементов
 style.configure("Accent.TButton", foreground="white", background="#4CAF50")
 style.map("Accent.TButton", 
          background=[("active", "#45a049"), ("disabled", "#81C784")])
 
-# Завершение инициализации GUI
 update_ui()
 
-# Обработка закрытия окна
 root.protocol("WM_DELETE_WINDOW", on_exit)
 
-# Запуск главного цикла
 if __name__ == "__main__":
     try:
         root.mainloop()
