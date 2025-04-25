@@ -30,7 +30,7 @@ jobs:
             episode_skipper.py
 
       - name: Upload Linux artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: EpisodeSkipper-linux
           path: dist/EpisodeSkipper
@@ -59,7 +59,7 @@ jobs:
             episode_skipper.py
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: EpisodeSkipper-win
           path: dist/EpisodeSkipper.exe
